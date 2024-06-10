@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "learnhub"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+django = "4.2.2"
+psycopg2 = "^2.9.9"
+pillow = "^10.3.0"
+djangorestframework = "^3.15.1"
+black = "^24.4.2"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
