@@ -16,8 +16,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_lessons_count(obj):
-        return Lesson.objects.filter(title_course=obj).count()
+        return Lesson.objects.filter(title_course=obj).count()  # Фильтр (указываем по какому полю будет идти подсчет)
 
     class Meta:
         model = Course
-        fields = ("title", "description", "lessons_count", "lessons_list")
+        fields = ("id", "title", "description", "lessons_count", "lessons_list")

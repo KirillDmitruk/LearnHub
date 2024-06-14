@@ -32,6 +32,8 @@ class Lesson(models.Model):
         Course,
         on_delete=models.CASCADE,
         help_text="Введите название курса",
+        verbose_name="Название курса",
+        related_name="lessons"
     )
     title_lesson = models.CharField(
         max_length=150,
