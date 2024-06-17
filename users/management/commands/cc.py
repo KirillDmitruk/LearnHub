@@ -3,7 +3,7 @@ from materials.models import Course
 
 
 class Command(BaseCommand):
-    """Команда создания нового пользователя."""
+    """Команда создания курса."""
 
     def handle(self, *args, **options):
         user_course_title = input("Введите название курса: ")
