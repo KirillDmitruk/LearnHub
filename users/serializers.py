@@ -11,7 +11,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    payments_history = PaymentSerializer(many=True, source='payment')
+    payments_history = PaymentSerializer(many=True, source='payment', read_only=True)
 
     class Meta:
         model = User
