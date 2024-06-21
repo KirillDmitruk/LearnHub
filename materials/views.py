@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from materials.models import Course, Lesson
+from materials.paginators import MaterialsPagination
 from materials.serializers import CourseSerializer, LessonSerializer
 from users.permisions import IsModerator, IsOwner
 
@@ -14,6 +15,7 @@ from users.permisions import IsModerator, IsOwner
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = MaterialsPagination
 
     def get_permissions(self):  # Проверка прав группы модераторов для курсов (нельзя создавать и удалять курс).
         if self.action in ('create',):
@@ -35,6 +37,7 @@ class LessonListApiView(ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = MaterialsPagination
 
 
 class LessonRetrieveApiView(RetrieveAPIView):
