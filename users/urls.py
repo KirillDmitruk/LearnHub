@@ -31,6 +31,6 @@ urlpatterns = [
     path("payment_update/<int:pk>/", PaymentUpdateAPIView.as_view(), name="payment_update"),
     path("payment_delete/<int:pk>/", PaymentDestroyAPIView.as_view(), name="payment_delete"),
     # token
-    path('api_token/', TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name='token_obtain_pair'),  # Доступ к токену неавт. пользоват.
+    path('login/', TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name='token_obtain_pair'),  # Доступ к токену неавт. пользоват.
     path('api_token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
