@@ -11,7 +11,11 @@ from users.views import (
     UserListAPIView,
     UserRetrieveAPIView,
     UserUpdateAPIView,
-    UserDestroyAPIView, PaymentCreateAPIView, PaymentListAPIView, PaymentRetrieveAPIView, PaymentUpdateAPIView,
+    UserDestroyAPIView,
+    PaymentCreateAPIView,
+    PaymentListAPIView,
+    PaymentRetrieveAPIView,
+    PaymentUpdateAPIView,
     PaymentDestroyAPIView,
 )
 
@@ -28,9 +32,22 @@ urlpatterns = [
     path("payment_create/", PaymentCreateAPIView.as_view(), name="payment_create"),
     path("payment/", PaymentListAPIView.as_view(), name="payment_list"),
     path("payment/<int:pk>/", PaymentRetrieveAPIView.as_view(), name="payment_detail"),
-    path("payment_update/<int:pk>/", PaymentUpdateAPIView.as_view(), name="payment_update"),
-    path("payment_delete/<int:pk>/", PaymentDestroyAPIView.as_view(), name="payment_delete"),
+    path(
+        "payment_update/<int:pk>/",
+        PaymentUpdateAPIView.as_view(),
+        name="payment_update",
+    ),
+    path(
+        "payment_delete/<int:pk>/",
+        PaymentDestroyAPIView.as_view(),
+        name="payment_delete",
+    ),
     # token
-    path('login/', TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name='token_obtain_pair'),  # Доступ к токену неавт. пользоват.
-    path('api_token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(
+        "login/",
+        TokenObtainPairView.as_view(permission_classes=(AllowAny,)),
+        name="token_obtain_pair",
+    ),
+    # Доступ к токену неавт. пользоват.
+    path("api_token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]

@@ -11,7 +11,9 @@ class Command(BaseCommand):
             print("Курс с таким названием уже существует.")
         else:
             course_description = input("Введите описание курса: ")
-            course = Course.objects.create(title=user_course_title, description=course_description)
+            course = Course.objects.create(
+                title=user_course_title, description=course_description
+            )
 
             course.save()
             print(f"Курс {user_course_title} успешно создан.")

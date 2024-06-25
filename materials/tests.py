@@ -8,12 +8,18 @@ from users.models import User
 
 class TestLessons(APITestCase):
     """Тестирование уроков"""
+
     def setUp(self) -> None:
-        self.user = User.objects.create(email='admin@example.com')
+        self.user = User.objects.create(email="admin@example.com")
         self.client.force_authenticate(user=self.user)
         self.course = Course.objects.create(title="Python", description="Основы Python")
-        self.lesson = Lesson.objects.create(title_course=self.course, title_lesson="ООП", description="Концепции ООП",
-                                            owner=self.user, video_url="https://www.youtube.com/watch")
+        self.lesson = Lesson.objects.create(
+            title_course=self.course,
+            title_lesson="ООП",
+            description="Концепции ООП",
+            owner=self.user,
+            video_url="https://www.youtube.com/watch",
+        )
 
     def test_create_lesson(self):
         """Тестирование создания урока"""
@@ -22,7 +28,7 @@ class TestLessons(APITestCase):
             "title_lesson": "ООП",
             "description": "Основы ООП",
             "title_course": self.lesson.title_course.id,
-            "video_url": "https://www.youtube.com/watch"
+            "video_url": "https://www.youtube.com/watch",
         }
 
         response = self.client.post(url, data=data)
@@ -43,7 +49,7 @@ class TestLessons(APITestCase):
             "title_lesson": "ООП",
             "description": "Концепции ООП",
             "title_course": self.lesson.title_course.id,
-            "video_url": "https://www.youtube.com/watch"
+            "video_url": "https://www.youtube.com/watch",
         }
         response = self.client.put(url, data)
         data = response.json()
@@ -70,9 +76,9 @@ class TestLessons(APITestCase):
                     "preview": None,
                     "video_url": self.lesson.video_url,
                     "title_course": self.lesson.title_course.id,
-                    "owner": self.lesson.owner.id
+                    "owner": self.lesson.owner.id,
                 },
-            ]
+            ],
         }
         response = self.client.get(url)
 
@@ -106,38 +112,34 @@ class TestLessons(APITestCase):
 
 class SubscriptionTestCase(APITestCase):
     """Тестирование подписок"""
+
     def setUp(self):
-        self.user = User.objects.create(email='admin1@localhost')
+        self.user = User.objects.create(email="admin1@localhost")
         self.course = Course.objects.create(title="Python", description="Основы Python")
         self.client.force_authenticate(user=self.user)
-        self.url = reverse('materials:subscription_create')
+        self.url = reverse("materials:subscription_create")
 
     def test_subscription_activate(self):
         """Тестирование активации подписки"""
-        data = {
-            "user": self.user.id,
-            "course": self.course.id
-        }
+        data = {"user": self.user.id, "course": self.course.id}
         response = self.client.post(self.url, data=data)
         print(response.json())
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Subscription.objects.all().count(), 1)
-        self.assertEqual(Subscription.objects.filter(user=self.user, course=self.course).exists(), True)
+        self.assertEqual(
+            Subscription.objects.filter(user=self.user, course=self.course).exists(),
+            True,
+        )
         self.assertEqual(response.json().get("message"), "подписка добавлена")
 
     def test_subscription_deactivate(self):
         """Тестирование деактивации подписки"""
-        data = {
-            "user": self.user.id,
-            "course": self.course.id
-        }
+        data = {"user": self.user.id, "course": self.course.id}
         response = self.client.post(self.url, data=data)
         print(response.json())
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Subscription.objects.all().count(), 1)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Subscription.objects.all().count(), 0)
         # self.assertEqual(Subscription.objects.filter(user=self.user, course=self.course).exists(), False)
         self.assertEqual(response.json().get("message"), "подписка удалена")
-
-

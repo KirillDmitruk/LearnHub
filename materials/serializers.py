@@ -9,16 +9,18 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [YouTubeValidation(field='video_url')]
+        validators = [YouTubeValidation(field="video_url")]
 
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons_count = SerializerMethodField()
-    lessons_list = LessonSerializer(source='lessons', many=True, read_only=True)
+    lessons_list = LessonSerializer(source="lessons", many=True, read_only=True)
 
     @staticmethod
     def get_lessons_count(obj):
-        return Lesson.objects.filter(title_course=obj).count()  # Фильтр (указываем по какому полю будет идти подсчет)
+        return Lesson.objects.filter(
+            title_course=obj
+        ).count()  # Фильтр (указываем по какому полю будет идти подсчет)
 
     class Meta:
         model = Course

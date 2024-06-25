@@ -13,14 +13,19 @@ class Course(models.Model):
         upload_to="course/",
         **NULLABLE,
         verbose_name="Превью курса",
-        help_text="Загрузите изображение"
+        help_text="Загрузите изображение",
     )
     description = models.TextField(
         verbose_name="Описание курса", help_text="Введите описание курса"
     )
 
-    owner = models.ForeignKey("users.User", verbose_name="Владеле курса", help_text="Укажите владельца", **NULLABLE,
-                              on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        "users.User",
+        verbose_name="Владеле курса",
+        help_text="Укажите владельца",
+        **NULLABLE,
+        on_delete=models.SET_NULL,
+    )
 
     def __str__(self):
         return self.title
@@ -36,7 +41,7 @@ class Lesson(models.Model):
         on_delete=models.CASCADE,
         help_text="Введите название курса",
         verbose_name="Название курса",
-        related_name="lessons"
+        related_name="lessons",
     )
     title_lesson = models.CharField(
         max_length=150,
@@ -50,17 +55,22 @@ class Lesson(models.Model):
         upload_to="lesson/",
         **NULLABLE,
         verbose_name="Превью урока",
-        help_text="Загрузите изображение"
+        help_text="Загрузите изображение",
     )
     video_url = models.URLField(
         max_length=200,
         **NULLABLE,
         verbose_name="Ссылка на видео",
-        help_text="Укажите ссылку на видео"
+        help_text="Укажите ссылку на видео",
     )
 
-    owner = models.ForeignKey("users.User", verbose_name="Владелец урока", help_text="Укажите владельца", **NULLABLE,
-                              on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        "users.User",
+        verbose_name="Владелец урока",
+        help_text="Укажите владельца",
+        **NULLABLE,
+        on_delete=models.SET_NULL,
+    )
 
     def __str__(self):
         return self.title_lesson
@@ -71,12 +81,16 @@ class Lesson(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="Пользователь", **NULLABLE)
-    course = models.ForeignKey("materials.Course", on_delete=models.CASCADE, related_name="Курс", **NULLABLE)
+    user = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, verbose_name="Пользователь", **NULLABLE
+    )
+    course = models.ForeignKey(
+        "materials.Course", on_delete=models.CASCADE, related_name="Курс", **NULLABLE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.email} подписан на {self.course.title}.'
+        return f"{self.user.email} подписан на {self.course.title}."
 
     class Meta:
         verbose_name = "Подписка"
