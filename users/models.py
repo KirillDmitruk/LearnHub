@@ -37,9 +37,14 @@ class User(AbstractUser):
 
 
 class Payment(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_payment", **NULLABLE
+
+    METHODS = (
+        ("CASH", "Наличные"),
+        ("TRANSFER", "Перевод")
     )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_payment", **NULLABLE)
+
     paid_course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -55,31 +60,15 @@ class Payment(models.Model):
         **NULLABLE,
     )
 
-    date = models.DateTimeField(
-        auto_now_add=True, **NULLABLE, verbose_name="Дата оплаты"
-    )
-    payment_method = models.CharField(max_length=50, verbose_name="Метод оплаты")
-    amount = models.PositiveIntegerField(
-        verbose_name="Сумма оплаты", help_text="Укажите сумму оплаты"
-    )
-    session_id = models.CharField(
-        max_length=255,
-        **NULLABLE,
-        verbose_name="id сессии",
-        help_text="Укажите ID сессии",
-    )
-    link = models.URLField(
-        max_length=400,
-        verbose_name="Ссылка на оплату",
-        help_text="Укажите ссылку на оплату",
-        **NULLABLE,
-    )
+    payment_date = models.DateTimeField(auto_now_add=True, **NULLABLE, verbose_name="Дата оплаты")
+    payment_method = models.CharField(max_length=50, choices=METHODS, default="CASH", verbose_name="Метод оплаты")
+    amount = models.PositiveIntegerField(verbose_name="Сумма оплаты", help_text="Укажите сумму оплаты")
+
+    session_id = models.CharField(max_length=255, **NULLABLE, verbose_name="id сессии", help_text="Укажите ID сессии")
+    link = models.URLField(max_length=400, verbose_name="Ссылка на оплату", help_text="Укажите ссылку на оплату", **NULLABLE)
 
     def __str__(self):
-        return (
-            f"{self.user} - {self.paid_course if self.paid_course else self.paid_lesson}"
-            f"Сумма на оплату: {self.amount}\nСсылка на оплату: {self.link}"
-        )
+        return self.user
 
     class Meta:
         verbose_name = "оплата"

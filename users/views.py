@@ -6,10 +6,8 @@ from rest_framework.permissions import AllowAny
 from users.models import User, Payment
 from users.serializers import UserSerializer, PaymentSerializer
 from users.services import (
-    convert_rub_to_usd,
     create_stripe_price,
-    create_stripe_session,
-)
+    create_stripe_session, create_stripe_product, convert_rub_to_usd, )
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -19,9 +17,7 @@ class UserCreateAPIView(generics.CreateAPIView):
         AllowAny,
     )  # Открывает доступ для неавторизованных пользователей
 
-    def perform_create(
-        self, serializer
-    ):  # один из вариантов создания user (более простой)
+    def perform_create(self, serializer):  # один из вариантов создания user (более простой)
         user = serializer.save(is_active=True)
         user.set_password(user.password)
         user.save()
@@ -52,11 +48,13 @@ class PaymentCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user)
-        amount_in_usd = convert_rub_to_usd(payment)  # конвертируем в usd
-        price = create_stripe_price(amount_in_usd)  # создаем цену
+        product = create_stripe_product(payment)
+        amount_in_usd = convert_rub_to_usd(payment.amount)
+        price = create_stripe_price(amount_in_usd, product)
         session_id, payment_link = create_stripe_session(price)
         payment.session_id = session_id
         payment.link = payment_link
+
         payment.save()
 
 
