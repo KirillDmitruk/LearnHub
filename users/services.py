@@ -12,12 +12,12 @@ def create_stripe_product(instance):
     return stripe_product.get("id")
 
 
-def convert_rub_to_usd(amount):
-    """ Конвертируем рубли в доллары. """
-    c = CurrencyRates()
-    rate = c.get_rate('RUB', 'USD')
-    result = int(amount * rate)
-    return result
+# def convert_rub_to_usd(amount):
+#     """ Конвертируем рубли в доллары. """
+#     c = CurrencyRates()
+#     rate = c.get_rate('RUB', 'USD')
+#     result = int(amount * rate)
+#     return result
 
 
 def create_stripe_price(amount, product):

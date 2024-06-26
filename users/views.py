@@ -7,7 +7,7 @@ from users.models import User, Payment
 from users.serializers import UserSerializer, PaymentSerializer
 from users.services import (
     create_stripe_price,
-    create_stripe_session, create_stripe_product, convert_rub_to_usd, )
+    create_stripe_session, create_stripe_product)
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -49,8 +49,8 @@ class PaymentCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user)
         product = create_stripe_product(payment)
-        amount_in_usd = convert_rub_to_usd(payment.amount)
-        price = create_stripe_price(amount_in_usd, product)
+        # amount_in_usd = convert_rub_to_usd(payment.amount)
+        price = create_stripe_price(payment.amount, product)
         session_id, payment_link = create_stripe_session(price)
         payment.session_id = session_id
         payment.link = payment_link
