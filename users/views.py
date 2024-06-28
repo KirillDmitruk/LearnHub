@@ -7,7 +7,9 @@ from users.models import User, Payment
 from users.serializers import UserSerializer, PaymentSerializer
 from users.services import (
     create_stripe_price,
-    create_stripe_session, create_stripe_product)
+    create_stripe_session,
+    create_stripe_product,
+)
 
 
 class UserCreateAPIView(generics.CreateAPIView):

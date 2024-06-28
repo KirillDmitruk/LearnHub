@@ -7,7 +7,9 @@ stripe.api_key = "sk_test_51PVGK4JfUz4NtprNxOfHwVXzIJnV67mATLGZcIoe2djGHzOQEJnOl
 def create_stripe_product(instance):
     """Создает продукт в stripe"""
 
-    title_product = f"{instance.paid_course}" if instance.paid_course else instance.paid_lesson
+    title_product = (
+        f"{instance.paid_course}" if instance.paid_course else instance.paid_lesson
+    )
     stripe_product = stripe.Product.create(name=f"{title_product}")
     return stripe_product.get("id")
 

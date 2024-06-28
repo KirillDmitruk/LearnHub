@@ -8,8 +8,7 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import MaterialsPagination
@@ -18,10 +17,11 @@ from materials.serializers import (
     LessonSerializer,
     SubscriptionSerializer,
 )
+from materials.tasks import send_mail_notification
 from users.permisions import IsModerator, IsOwner
 
 
-class CourseViewSet(ModelViewSet):
+class CourseViewSet(viewsets.ModelViewSet):
     """Course view set"""
 
     queryset = Course.objects.all()
@@ -38,6 +38,20 @@ class CourseViewSet(ModelViewSet):
         elif self.action == "destroy":
             self.permission_classes = ~IsModerator | IsOwner
         return super().get_permissions()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        subscription = Subscription.objects.filter(course=instance)
+
+        for sub in subscription:
+            email = self.request.user.email
+            if subscription.filter(user=sub.user.pk).exists():
+                send_mail_notification.delay(email)
+            else:
+                print("Подписка не оформлена.")
 
 
 class LessonCreateApiView(CreateAPIView):
@@ -81,24 +95,26 @@ class LessonDestroyApiView(DestroyAPIView):
     permission_classes = [IsAuthenticated, ~IsModerator | IsOwner]
 
 
-class SubscriptionAPIView(APIView):
-    """Create a Subscription"""
+class SubscriptionViewSet(viewsets.ModelViewSet):
+    """Subscription view set"""
 
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
         course_id = self.request.data.get("course")
-        course_item = get_object_or_404(Course, id=course_id)
-        subs_item = Subscription.objects.filter(user=user, course=course_item).exists()
+        course_item = get_object_or_404(Course, pk=course_id)
 
-        if subs_item:
+        subs_item = Subscription.objects.filter(user=user, course=course_item)
+
+        if subs_item.exists():
             subs_item.delete()
-            message = "подписка удалена"
+            message = "подписка удалена."
         else:
-            Subscription.objects.create(user=user, course=course_item)
-            message = "подписка добавлена"
+            subs_item = Subscription.objects.create(user=user, course=course_item)
+            subs_item.save()
+            message = "подписка добавлена."
 
         return Response({"message": message})
