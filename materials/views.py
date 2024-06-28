@@ -8,7 +8,7 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import MaterialsPagination
@@ -107,14 +107,11 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
         course_id = self.request.data.get("course")
         course_item = get_object_or_404(Course, pk=course_id)
 
-        subs_item = Subscription.objects.filter(user=user, course=course_item)
-
-        if subs_item.exists():
-            subs_item.delete()
-            message = "подписка удалена."
+        subscription, created = Subscription.objects.get_or_create(user=user, course=course_item)
+        if not created:
+            subscription.delete()
+            message = 'Subscription removed'
         else:
-            subs_item = Subscription.objects.create(user=user, course=course_item)
-            subs_item.save()
-            message = "подписка добавлена."
+            message = 'Subscription added'
 
-        return Response({"message": message})
+        return Response({"message": message}, status=status.HTTP_201_CREATED)
