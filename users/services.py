@@ -1,7 +1,8 @@
-import stripe
-from forex_python.converter import CurrencyRates
+import os
 
-stripe.api_key = "sk_test_51PVGK4JfUz4NtprNxOfHwVXzIJnV67mATLGZcIoe2djGHzOQEJnOlQd6BERFobLJ6mtuKvRoiByf5P1Pma9INH3Z00cvRLBXQu"
+import stripe
+
+stripe.api_key = os.getenv("STRIPE_API_KEY")
 
 
 def create_stripe_product(instance):
@@ -12,14 +13,6 @@ def create_stripe_product(instance):
     )
     stripe_product = stripe.Product.create(name=f"{title_product}")
     return stripe_product.get("id")
-
-
-# def convert_rub_to_usd(amount):
-#     """ Конвертируем рубли в доллары. """
-#     c = CurrencyRates()
-#     rate = c.get_rate('RUB', 'USD')
-#     result = int(amount * rate)
-#     return result
 
 
 def create_stripe_price(amount, product):
