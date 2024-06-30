@@ -6,6 +6,7 @@ from users.models import User
 
 
 class Command(BaseCommand):
+    """Команда создания суперпользователя"""
     def handle(self, *args, **kwargs):
         user = User.objects.create(
             email= os.getenv('ADMIN_EMAIL'),

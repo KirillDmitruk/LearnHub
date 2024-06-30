@@ -16,7 +16,8 @@ class Course(models.Model):
         help_text="Загрузите изображение",
     )
     description = models.TextField(
-        verbose_name="Описание курса", help_text="Введите описание курса"
+        verbose_name="Описание курса",
+        help_text="Введите описание курса"
     )
 
     owner = models.ForeignKey(
@@ -88,6 +89,9 @@ class Subscription(models.Model):
         "materials.Course", on_delete=models.CASCADE, related_name="Курс", **NULLABLE
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_user_email(self):
+        return self.user.email
 
     def __str__(self):
         return f"{self.user.email} подписан на {self.course.title}."

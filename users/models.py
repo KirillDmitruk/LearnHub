@@ -37,7 +37,6 @@ class User(AbstractUser):
 
 
 class Payment(models.Model):
-
     METHODS = (("CASH", "Наличные"), ("TRANSFER", "Перевод"))
 
     user = models.ForeignKey(

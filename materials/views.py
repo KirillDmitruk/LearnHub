@@ -28,9 +28,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     pagination_class = MaterialsPagination
 
-    def get_permissions(
-        self,
-    ):  # Проверка прав группы модераторов для курсов (нельзя создавать и удалять курс).
+    def get_permissions(self):  # Проверка прав группы модераторов для курсов (нельзя создавать и удалять курс).
         if self.action in ("create",):
             self.permission_classes = ~IsModerator
         elif self.action in ("update",):
@@ -44,17 +42,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         instance = serializer.save()
-        subscription = Subscription.objects.filter(course=instance)
-
-        course_id = f"Обновление курса {instance.id}!"
-        message = f"Курс {instance.id} был обновлен."
-
-        for sub in subscription:
-            email = self.request.user.email
-            if subscription.filter(user=sub.user.pk).exists():
-                send_mail_notification.delay(course_id, message, email)
-            else:
-                print("Подписка не оформлена.")
+        send_mail_notification.delay(course_id=instance.id)
 
 
 class LessonCreateApiView(CreateAPIView):
