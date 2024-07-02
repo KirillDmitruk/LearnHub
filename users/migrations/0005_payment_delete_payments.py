@@ -8,7 +8,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("materials", "0010_delete_payment"),
         ("users", "0004_alter_payments_user"),
     ]
 

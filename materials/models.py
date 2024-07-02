@@ -1,5 +1,8 @@
 from django.db import models
 
+from config import settings
+from config.settings import AUTH_USER_MODEL
+
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -83,12 +86,18 @@ class Lesson(models.Model):
 
 class Subscription(models.Model):
     user = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, verbose_name="Пользователь", **NULLABLE
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь"
     )
     course = models.ForeignKey(
-        "materials.Course", on_delete=models.CASCADE, related_name="Курс", **NULLABLE
+        "materials.Course",
+        on_delete=models.CASCADE,
+        related_name="Курс",
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
     def get_user_email(self):
         return self.user.email
