@@ -9,7 +9,7 @@ from users.models import User
 
 @shared_task
 def block_users():
-    """Блокировка неактивных пользователей"""
+    """ Блокировка неактивных пользователей """
 
     now = timezone.now()
     month_ago = now - relativedelta(months=1)

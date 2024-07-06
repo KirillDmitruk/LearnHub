@@ -6,7 +6,7 @@ stripe.api_key = os.getenv("STRIPE_API_KEY")
 
 
 def create_stripe_product(instance):
-    """Создает продукт в stripe"""
+    """ Создает продукт в stripe """
 
     title_product = (
         f"{instance.paid_course}" if instance.paid_course else instance.paid_lesson
@@ -16,7 +16,7 @@ def create_stripe_product(instance):
 
 
 def create_stripe_price(amount, product):
-    """Создает цену в stripe"""
+    """ Создает цену в stripe """
 
     return stripe.Price.create(
         currency="usd",
@@ -27,7 +27,7 @@ def create_stripe_price(amount, product):
 
 
 def create_stripe_session(price):
-    """Создает сессию на оплату в stripe"""
+    """ Создает сессию на оплату в stripe """
 
     session = stripe.checkout.Session.create(
         success_url="https://127.0.0.1:8000",

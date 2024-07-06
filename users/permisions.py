@@ -2,7 +2,7 @@ from rest_framework import permissions
 
 
 class IsModerator(permissions.BasePermission):
-    """Проверяет, является ли пользователь модератором."""
+    """ Проверяет, является ли пользователь модератором """
 
     message = "Adding customers not allowed."
 
@@ -13,7 +13,7 @@ class IsModerator(permissions.BasePermission):
 
 
 class IsOwner(permissions.BasePermission):
-    """Проверяет, является ли пользователь владельцем."""
+    """ Проверяет, является ли пользователь владельцем """
 
     message = "You must be the owner of this content."
 

@@ -22,6 +22,7 @@ celery = "^5.4.0"
 redis = "^5.0.7"
 django-celery-beat = "^2.6.0"
 gevent = "^24.2.1"
+coverage = "^7.5.4"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"

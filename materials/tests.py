@@ -7,7 +7,7 @@ from users.models import User
 
 
 class TestLessons(APITestCase):
-    """Тестирование уроков"""
+    """ Тестирование уроков """
 
     def setUp(self) -> None:
         self.user = User.objects.create(email="admin@example.com")
@@ -22,7 +22,8 @@ class TestLessons(APITestCase):
         )
 
     def test_create_lesson(self):
-        """Тестирование создания урока"""
+        """ Тестирование создания урока """
+
         url = reverse("materials:create_lesson")
         data = {
             "title_lesson": "ООП",
@@ -43,7 +44,8 @@ class TestLessons(APITestCase):
         self.assertEqual(data.get("description"), "Основы ООП")
 
     def test_update_lesson(self):
-        """Тестирование изменений урока"""
+        """ Тестирование изменений урока """
+
         url = reverse("materials:lesson_update", args=(self.lesson.pk,))
         data = {
             "title_lesson": "ООП",
@@ -62,7 +64,8 @@ class TestLessons(APITestCase):
         self.assertEqual(data.get("owner"), self.lesson.owner.id)
 
     def test_list_lesson(self):
-        """Тестирование списка уроков"""
+        """ Тестирование списка уроков """
+
         url = reverse("materials:list_lessons")
         result = {
             "count": 1,
@@ -89,7 +92,8 @@ class TestLessons(APITestCase):
         self.assertEqual(data, result)
 
     def test_retrieve_lesson(self):
-        """Тестирование просмотра одного урока"""
+        """ Тестирование просмотра одного урока """
+
         url = reverse("materials:lesson_detail", args=(self.lesson.pk,))
         response = self.client.get(url)
         data = response.json()
@@ -111,7 +115,7 @@ class TestLessons(APITestCase):
 
 
 class SubscriptionTestCase(APITestCase):
-    """Тестирование подписок"""
+    """ Тестирование подписок """
 
     def setUp(self):
         self.user = User.objects.create(email="admin1@localhost")
@@ -134,7 +138,8 @@ class SubscriptionTestCase(APITestCase):
         self.assertEqual(response.json().get("message"), "подписка добавлена")
 
     def test_subscription_deactivate(self):
-        """Тестирование деактивации подписки"""
+        """ Тестирование деактивации подписки """
+
         data = {"user": self.user.id, "course": self.course.id}
         response = self.client.post(self.url, data=data)
         print(response.json())

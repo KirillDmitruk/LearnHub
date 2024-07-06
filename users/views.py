@@ -13,6 +13,8 @@ from users.services import (
 
 
 class UserCreateAPIView(generics.CreateAPIView):
+    """ Создание Пользователя """
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (
@@ -26,25 +28,34 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 
 class UserListAPIView(generics.ListAPIView):
+    """ Список Пользователей """
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
+    """ Просмотр одного Пользователя """
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):
+    """ Редактирование Пользователя """
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserDestroyAPIView(generics.DestroyAPIView):
+    """ Удаление Пользователя """
+
     queryset = User.objects.all()
 
 
 class PaymentCreateAPIView(generics.CreateAPIView):
+    """ Создание платежа """
+
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
@@ -61,6 +72,8 @@ class PaymentCreateAPIView(generics.CreateAPIView):
 
 
 class PaymentListAPIView(generics.ListAPIView):
+    """ Список Платежей """
+
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter]
@@ -73,14 +86,20 @@ class PaymentListAPIView(generics.ListAPIView):
 
 
 class PaymentRetrieveAPIView(generics.RetrieveAPIView):
+    """ Просмотр одного Платежа """
+
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
 
 class PaymentUpdateAPIView(generics.UpdateAPIView):
+    """ Редактирование Платежа """
+
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
 
 class PaymentDestroyAPIView(generics.DestroyAPIView):
+    """ Удаление Платежа """
+
     queryset = Payment.objects.all()

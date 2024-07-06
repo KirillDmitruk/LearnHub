@@ -6,6 +6,7 @@ from materials.validators import YouTubeValidation
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    """ Сериализатор Урока """
     class Meta:
         model = Lesson
         fields = "__all__"
@@ -13,6 +14,8 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    """ Сериализатор Курса """
+
     lessons_count = SerializerMethodField()
     lessons_list = LessonSerializer(source="lessons", many=True, read_only=True)
 
@@ -28,6 +31,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    """ Сериализатор Подписки """
+
     class Meta:
         model = Subscription
         fields = "__all__"

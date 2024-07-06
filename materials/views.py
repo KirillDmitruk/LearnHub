@@ -22,7 +22,7 @@ from users.permisions import IsModerator, IsOwner
 
 
 class CourseViewSet(viewsets.ModelViewSet):
-    """Course view set"""
+    """ Course view set """
 
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -46,7 +46,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class LessonCreateApiView(CreateAPIView):
-    """Create a Lesson"""
+    """ Создание урока """
 
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
@@ -54,7 +54,7 @@ class LessonCreateApiView(CreateAPIView):
 
 
 class LessonListApiView(ListAPIView):
-    """List of Lessons"""
+    """ Список уроков """
 
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
@@ -63,7 +63,7 @@ class LessonListApiView(ListAPIView):
 
 
 class LessonRetrieveApiView(RetrieveAPIView):
-    """Retrieve a Lesson"""
+    """ Просмотр одного урока """
 
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
@@ -71,7 +71,7 @@ class LessonRetrieveApiView(RetrieveAPIView):
 
 
 class LessonUpdateApiView(UpdateAPIView):
-    """Update a Lesson"""
+    """ Редактирование урока """
 
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
@@ -79,7 +79,7 @@ class LessonUpdateApiView(UpdateAPIView):
 
 
 class LessonDestroyApiView(DestroyAPIView):
-    """Delete a Lesson"""
+    """ Удаление урока """
 
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
@@ -87,7 +87,7 @@ class LessonDestroyApiView(DestroyAPIView):
 
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
-    """Subscription view set"""
+    """ Subscription view set """
 
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
