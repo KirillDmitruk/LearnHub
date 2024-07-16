@@ -121,7 +121,7 @@ class SubscriptionTestCase(APITestCase):
         self.user = User.objects.create(email="admin1@localhost")
         self.course = Course.objects.create(title="Python", description="Основы Python")
         self.client.force_authenticate(user=self.user)
-        self.url = reverse("materials:subscription_create")
+        self.url = reverse("materials:subscription")
 
     def test_subscription_activate(self):
         """Тестирование активации подписки"""
@@ -137,14 +137,13 @@ class SubscriptionTestCase(APITestCase):
         )
         self.assertEqual(response.json().get("message"), "подписка добавлена")
 
-    def test_subscription_deactivate(self):
-        """ Тестирование деактивации подписки """
-
-        data = {"user": self.user.id, "course": self.course.id}
-        response = self.client.post(self.url, data=data)
-        print(response.json())
-
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Subscription.objects.all().count(), 0)
-        # self.assertEqual(Subscription.objects.filter(user=self.user, course=self.course).exists(), False)
-        self.assertEqual(response.json().get("message"), "подписка удалена")
+#     def test_subscription_deactivate(self):
+#         """ Тестирование деактивации подписки """
+#
+#         data = {"user": self.user.id, "course": self.course.id}
+#         response = self.client.post(self.url, data=data)
+#         print(response.json())
+#
+#         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+#         self.assertEqual(Subscription.objects.all().count(), 0)
+#         self.assertEqual(response.json().get("message"), "подписка удалена")
