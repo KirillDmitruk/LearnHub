@@ -1,14 +1,15 @@
-# Используем базовый образ Python
-FROM python:3
+FROM python:3.12-slim
 
-# Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
 
-# Устанавливаем poetry
+COPY pyproject.toml .
+
+RUN pip install --upgrade pip
+
 RUN pip install poetry
 
-# Копируем зависимости в контейнер
-COPY poetry.lock pyproject.toml /app/
+RUN poetry config virtualenvs.create false
 
-# Копируем код приложения в контейнер
-COPY . /app/
+RUN poetry install --no-root
+
+COPY . .
